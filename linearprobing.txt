@@ -1,0 +1,67 @@
+#include<stdio.h>
+#define size 7
+int a[size];
+void init()
+{
+int i;
+for(int i=0;i<size;i++)
+a[i]=-1;
+}
+void insert(int value)
+{
+int key=value%size;
+if(a[key]==-1)
+{
+a[key]=value;
+printf("%d inserted at a[%d]\n",value,key);
+}
+else
+{
+printf("collision:a[%d] has element %d already!\n",key,a[key]);
+printf("unable to insert %d\n",value);
+}}
+void del(int value)
+{
+int key=value%size;
+if (a[key]==value)
+a[key]=-1;
+else
+printf("%d not present in hash table/n",value);
+}
+void search(int value)
+{
+	int key=value%size;
+	if(a[key]==value)
+	printf("Search found \n");
+	else
+	printf("Search not found \n");
+}
+
+void print()
+{
+	int i;
+	for(i=0;i<size;i++)
+	printf("a[%d]=#d\n", i,a[i]);
+}
+
+int main()
+{
+	init();
+	insert(10);
+	insert(4);
+	insert(2);
+	insert(3);
+	printf("Hash Table");
+	print();
+	printf("\n");
+	printf("Deleting value 10 \n");
+	del(10);
+	printf("After the deletion has table \n");
+	print();
+	printf("\n");
+	printf("Searching value 4 \n");
+	search(4);
+	printf("Searching value 10 \n");
+	search(10);
+	return 0;
+}
