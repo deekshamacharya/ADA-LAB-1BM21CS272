@@ -1,68 +1,65 @@
 #include<stdio.h>
-#include<conio.h>
+#include<limits.h>
 
-int cost[10][10],vt[10],et[10][10],vis[10],j,n;
-int sum=0;
-int x=1;
-int e=0;
-void prims();
-
-void main()
+void prims( int graph[100][100], int vertices)
 {
-   int i;
+int parent[vertices];
+int dist[vertices];
+int visited[vertices];
 
-   printf("enter the number of vertices\n");
-   scanf("%d",&n);
-   printf("enter the cost adjacency matrix\n");
-   for(i=1;i<=n;i++)
-   {
-       for(j=1;j<=n;j++)
-       {
-	  scanf("%d",&cost[i][j]);
-       }
-       vis[i]=0;
-    }
-    prims();
-    printf("edges of spanning tree\n");
-    for(i=1;i<=e;i++)
-    {
-	printf("%d,%d\t",et[i][0],et[i][1]);
-    }
-    printf("weight=%d\n",sum);
-    getch();
+for(int i=0;i<vertices;i++)
+{
+dist[i]=INT_MAX;
+visited[i]=0;
 }
 
-void prims()
+dist[0]=0;
+parent[0]=-1;
+
+
+for(int count=0;count<vertices-1;count++){
+int u=-1;
+for(int i=0;i<vertices;i++){
+if(!visited[i] &&  (u == -1||dist[i]<dist[u])){
+u=i;
+}
+}
+
+visited[u]=1;
+
+for(int v=0;v<vertices;v++)
 {
-   int s,min,m,k,u,v;
-   vt[x]=1;
-   vis[x]=1;
-   for(s=1;s<n;s++)
-   {
-       j=x;
-       min=999;
-       while(j>0)
-       {
-	   k=vt[j];
-	   for(m=2;m<=n;m++)
-	   {
-	     if(vis[m]==0)
-	     {
-		if(cost[k][m]<min)
-		{
-		   min=cost[k][m];
-		   u=k;
-		   v=m;
-		}
-	      }
-	 }
-	 j--;
+if( graph[u][v] && !visited[v] && graph[u][v]<dist[v]){
+parent[v]=u;
+dist[v]=graph[u][v];
+}
+}
+}
+
+printf("edge          weight\n");
+for(int i=1;i<vertices;i++)
+{
+printf("%d - %d    %d\n",parent[i],i,graph[i][parent[i]]);
+}
+}
+
+int main()
+{
+    int vertices;
+printf("enter the number of vertices");
+scanf("%d",&vertices);
+
+int graph[100][100];
+printf("enter the graph");
+for(int i=0;i<vertices;i++)
+{
+    for(int j=0;j<vertices;j++){
+    scanf("%d",&graph[i][j]);
     }
-    vt[++x]=v;
-    et[s][0]=u;
-    et[s][1]=v;
-    e++;
-    vis[v]=1;
-    sum=sum+min;
- }
+}
+
+
+prims( graph,vertices);
+
+return 0;
 }
